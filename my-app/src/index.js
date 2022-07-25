@@ -2,6 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
+function MoveSorter(props) {
+  return (
+  <button className='' onClick={props.onClick}>
+    {props.text}
+  </button>
+  );
+}
+
 function Square(props) {
   return (
     <button className='square' onClick={props.onClick}>
@@ -11,32 +19,33 @@ function Square(props) {
 }
 class Board extends React.Component {
   renderSquare(i) {
+    console.log(i);
     return (
       <Square
+        key={i}
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
       />
     );
   }
 
+  getBoardRow(startIndex) {
+    let content = [];
+    for (let index = startIndex; index < startIndex + 3; index++) {
+      content.push(this.renderSquare(index));
+    }
+    return content;
+  }
+
+
   render() {
+    let content = [];
+    for (let index = 0; index < 3; index++) {
+      content.push(<div className='board-row' key={'row'+index}>{ this.getBoardRow(index * 3) }</div>);
+    };
     return (
       <div>
-        <div className='board-row'>
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className='board-row'>
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className='board-row'>
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+        { content }
       </div>
     );
   }
@@ -48,11 +57,13 @@ class Game extends React.Component {
     this.state = {
       history: [
         {
-          squares: Array(9).fill(null)
+          squares: Array(9).fill(null),
+          move: null
         }
       ],
       xIsNext: true,
-      stepNumber: 0
+      stepNumber: 0,
+      sortMovesAsc: true
     }
   }
 
@@ -72,7 +83,8 @@ class Game extends React.Component {
     squares[i] = this.getNextValue();
     this.setState({
       history: history.concat([{
-        squares: squares
+        squares: squares,
+        move: [Math.floor(i / 3), i % 3]
       }]),
       xIsNext: !this.state.xIsNext,
       stepNumber: history.length
@@ -82,23 +94,35 @@ class Game extends React.Component {
   jumpTo(step) {
     this.setState({
       stepNumber: step,
-      xIsNext: (step % 2) == 0
+      xIsNext: (step % 2) === 0
     });
+  }
+
+  handleSortClick() {
+    this.setState(
+      {sortMovesAsc: !this.state.sortMovesAsc}
+    );
   }
 
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares)
+    const sortBtnText = this.state.sortMovesAsc ? 'Ascending' : 'Descending'
 
-    const moves = history.map((step, move) => {
-      const desc = move ? 'Go to move #' + move : 'Go to game start';
+    let moves = history.map((step, move) => {
+      const desc = move ? 'Go to move #' + move + " ("+history[move].move[0]+", "+history[move].move[1]+")" : 'Go to game start';
+      let btnClass = move === this.state.stepNumber ? 'boldxxx' : 'normal';
       return(
         <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          <button onClick={() => this.jumpTo(move)} className={btnClass}>{desc}</button>
         </li>
       )
     });
+
+    if (!this.state.sortMovesAsc) {
+      moves = moves.reverse();
+    }
 
     let status;
     if (winner) {
@@ -116,6 +140,7 @@ class Game extends React.Component {
         </div>
         <div className='game-info'>
           <div>{status}</div>
+          <div>Sort Moves: <MoveSorter onClick={() => this.handleSortClick()} text={sortBtnText}/></div>
           <ol>{moves}</ol>
         </div>
       </div>
@@ -142,10 +167,10 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return [a, b, c];
     }
   }
   return null;
 }
 
-// Still todo: https://reactjs.org/tutorial/tutorial.html#wrapping-up
+// Still todo: https://reactjs.org/tutorial/tutorial.html#wrapping-up - Finished all except highlighting the winning squares and result being a draw
