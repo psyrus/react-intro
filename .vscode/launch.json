@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "name": "Launch Edge",
+            "request": "launch",
+            "type": "msedge",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/my-app"
+        },
+        {
+            "type": "node-terminal",
+            "name": "Debug my-app",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/my-app"
+        }
+    ]
+}
