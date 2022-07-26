@@ -1,3 +1,4 @@
+// https://reactjs.org/tutorial/tutorial.html#wrapping-up - Finished all
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -181,5 +182,3 @@ function calculateWinner(squares) {
     return 'Draw'
   }
 }
-
-// Still todo: https://reactjs.org/tutorial/tutorial.html#wrapping-up - Finished all except highlighting the winning squares and result being a draw
