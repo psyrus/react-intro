@@ -12,19 +12,19 @@ function MoveSorter(props) {
 
 function Square(props) {
   return (
-    <button className='square' onClick={props.onClick}>
+    <button className={props.className} onClick={props.onClick}>
       {props.value}
     </button>
   );
 }
 class Board extends React.Component {
   renderSquare(i) {
-    console.log(i);
     return (
       <Square
         key={i}
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
+        className = {this.props.winningSquares && this.props.winningSquares.includes(i) ? 'square winner' : 'square'}
       />
     );
   }
@@ -126,7 +126,11 @@ class Game extends React.Component {
 
     let status;
     if (winner) {
-      status = 'Winner: ' + winner;
+      if (winner === 'Draw') {
+        status = 'Winner: No one! It was a draw';
+      } else {
+        status = 'Winner: ' + current.squares[winner[0]];
+      }
     } else {
       status = 'Next player: ' + this.getNextValue();
     }
@@ -136,6 +140,7 @@ class Game extends React.Component {
           <Board
             squares = {current.squares}
             onClick={(i) => this.handleClick(i)}
+            winningSquares = {winner}
           />
         </div>
         <div className='game-info'>
@@ -170,7 +175,11 @@ function calculateWinner(squares) {
       return [a, b, c];
     }
   }
-  return null;
+  if (squares.includes(null)) {
+    return null;
+  } else {
+    return 'Draw'
+  }
 }
 
 // Still todo: https://reactjs.org/tutorial/tutorial.html#wrapping-up - Finished all except highlighting the winning squares and result being a draw
