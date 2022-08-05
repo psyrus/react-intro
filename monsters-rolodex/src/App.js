@@ -7,51 +7,39 @@ class App extends Component {
     super();
 
     this.state = {
-      name: { firstName: 'MyFirstName', lastName: 'MyLastName' },
-      company: 'ZTM',
+      monsters: [],
     };
   }
 
-  getRandomName() {
-    let names = ['James May', 'Matt Richardson', 'Jim Jefferies'];
-    let currentName = `${this.state.name.firstName} ${this.state.name.lastName}`;
-    let newName, nameIndex;
-    do {
-      nameIndex = Math.floor(Math.random() * names.length);
-      newName = names[nameIndex];
-    } while (newName === currentName);
-
-    this.setState(
-      // Set state main function
-      (state, props) => {
-        return {
-          name: {
-            firstName: newName.split(' ')[0],
-            lastName: newName.split(' ')[1],
+  //TODO: I don't understand why this is running twice! It logs two times to the console on each render
+  componentDidMount() {
+    // If you need to make an api request that must complete before the component originally renders, use this
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then((response) => {
+        return response.json();
+      })
+      .then((users) => {
+        this.setState(
+          () => {
+            return { monsters: users };
           },
-          nameChanged: true,
-        };
-      },
-      // callback
-      () => {
-        console.log(this.state.name);
-      }
-    );
+          () => {
+            console.log(this.state);
+          }
+        );
+      });
   }
 
   render() {
     return (
       <div className='App'>
-        <header className='App-header'>
-          <img src={logo} className='App-logo' alt='logo' />
-          <p>
-            Hello {this.state.name.firstName} {this.state.name.lastName}, I work
-            at {this.state.company}
-          </p>
-          <button onClick={() => this.getRandomName()}>
-            Change Name Again
-          </button>
-        </header>
+        {this.state.monsters.map((monster) => {
+          return (
+            <div key={monster.id}>
+              <h1>{monster.name}</h1>
+            </div>
+          );
+        })}
       </div>
     );
   }
