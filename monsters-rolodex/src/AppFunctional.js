@@ -1,7 +1,7 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 import CardListFunctional from './components/card-list/card-list-functional.component';
-import SearchBox from './components/search-box/search-box.component';
+import SearchBoxFunctional from './components/search-box/search-box-functional.component';
 
 const AppFunctional = () => {
   //console.log('Start render');
@@ -42,7 +42,7 @@ const AppFunctional = () => {
   return (
     <div className='App'>
       <h1 className='app-title'>Monsters Rolladex</h1>
-      <SearchBox
+      <SearchBoxFunctional
         className='search-box'
         placeholder='Search Monsters'
         onChange={onSearchChange}
