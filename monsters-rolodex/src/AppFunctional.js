@@ -1,6 +1,6 @@
 import './App.css';
 import { useState, useEffect } from 'react';
-import CardList from './components/card-list/card-list.component';
+import CardListFunctional from './components/card-list/card-list-functional.component';
 import SearchBox from './components/search-box/search-box.component';
 
 const AppFunctional = () => {
@@ -47,7 +47,7 @@ const AppFunctional = () => {
         placeholder='Search Monsters'
         onChange={onSearchChange}
       />
-      <CardList content={filteredMonsters} />
+      <CardListFunctional content={filteredMonsters} />
     </div>
   );
 };
