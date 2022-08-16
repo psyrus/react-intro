@@ -11,7 +11,7 @@ class CardList extends Component {
             <div className="card-list">
                 {
                     this.props.content.map((item) => (
-                        <Card item={item} />
+                        <Card item={item} key={item.id} />
                     ))
                 }
             </div>
