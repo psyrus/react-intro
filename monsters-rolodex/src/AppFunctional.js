@@ -8,6 +8,7 @@ const AppFunctional = () => {
   const [searchString, updateSearchString] = useState('');
   const [monsters, setMonsters] = useState([]);
   const [filteredMonsters, setFilteredMonsters] = useState(monsters);
+  const [title, setTitle] = useState('');
 
   useEffect(
     /* This code will run any time one of the variables passed in the array below (second param) changes. This will prevent the code from constantly re-rendering if we didn't use this code - because originally the copy of the monsters array from the API has a different address in memory each time which meant that the functional component would see it as updated each time and go into an infinite loop */
@@ -38,14 +39,24 @@ const AppFunctional = () => {
     const searchStringParsed = event.target.value.toLocaleLowerCase();
     updateSearchString(searchStringParsed);
   };
+  const onTitleChange = (event) => {
+    const searchTitleParsed = event.target.value;
+    setTitle(searchTitleParsed);
+  };
 
   return (
     <div className='App'>
-      <h1 className='app-title'>Monsters Rolladex</h1>
+      <h1 className='app-title'>{title}</h1>
       <SearchBoxFunctional
         className='search-box'
         placeholder='Search Monsters'
         onChange={onSearchChange}
+      />
+      <br />
+      <SearchBoxFunctional
+        className='title-box'
+        placeholder='Set Title'
+        onChange={onTitleChange}
       />
       <CardListFunctional content={filteredMonsters} />
     </div>
