@@ -5,6 +5,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from 'firebase/auth';
 
 import { doc, getDoc, setDoc, getFirestore } from 'firebase/firestore';
@@ -58,4 +59,20 @@ export const createAuthUserWithEmailAndPassword = async (email, password) => {
     throw new Error('Need both email and password');
   }
   return createUserWithEmailAndPassword(auth, email, password);
+};
+
+export const signInLegacy = async (email, password) => {
+  try {
+    let userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const user = userCredential.user;
+    return user;
+  } catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log('Error Occurred.', errorCode, errorMessage);
+  }
 };
