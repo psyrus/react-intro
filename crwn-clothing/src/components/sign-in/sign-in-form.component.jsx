@@ -2,6 +2,7 @@ import FormInput from "../form-input/form-input.component"
 import Button from "../button/button.component";
 import { signInWithGooglePopup, createUserDocumentfromAuth, signInLegacy } from "../../utils/firebase/firebase.utils";
 import { useState } from "react";
+import "./sign-in-form.styles.scss"
 
 const SignInForm = () => {
 
@@ -18,7 +19,7 @@ const SignInForm = () => {
         setFormFields({ ...formFields, [event.target.name]: event.target.value });
     }
 
-    const logPasswordUser = async (event) => {
+    const credentialsSignInFlow = async (event) => {
         event.preventDefault();
 
         try {
@@ -38,13 +39,13 @@ const SignInForm = () => {
         setFormFields(defaultFormFields);
     }
 
-    const logGoogleUser = async () => {
+    const googleSignInFlow = async () => {
         const response = await signInWithGooglePopup();
         const userDocReferece = await createUserDocumentfromAuth(response.user);
     }
 
     return (
-        <div>
+        <div className="sign-in-container">
             <h2>I already have an account</h2>
             <span>Sign in with your email and password</span>
             <form>
@@ -62,8 +63,10 @@ const SignInForm = () => {
                     onChange={handleChange}
                     name='password'
                     value={formFields.password} />
-                <Button buttonType={'default'} type='submit' onClick={logPasswordUser}>Sign In</Button>
-                <Button buttonType={'default'} type='submit' onClick={logGoogleUser}>Sign in with Google Popup</Button>
+                <div className="buttons-container">
+                    <Button buttonType={'default'} type='submit' onClick={credentialsSignInFlow}>Sign In</Button>
+                    <Button buttonType={'google'} type='button' onClick={googleSignInFlow}>Google Sign In</Button>
+                </div>
             </form>
         </div>
     )
