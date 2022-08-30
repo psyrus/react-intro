@@ -17,10 +17,6 @@ const SignUpForm = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        console.log("HandleSubmit")
-        console.log(event)
-        console.log(formFields);
-
         if (!(formFields.displayName && formFields.email && formFields.password && formFields.confirmPassword)) {
             let message = 'All form fields must be filled out';
             alert(message);
@@ -36,7 +32,6 @@ const SignUpForm = () => {
             // Need to create an instance in the database
             const response = await createAuthUserWithEmailAndPassword(formFields.email, formFields.password);
 
-            console.log(response);
             await createUserDocumentfromAuth(response.user, { displayName: formFields.displayName });
             resetFormFields();
             alert(`User created successfully with UID: ${response.user.uid}`);
