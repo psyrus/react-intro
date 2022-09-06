@@ -3,8 +3,6 @@ import { createContext, useState } from "react"
 const addCartItem = (cartItems, productToAdd) => {
     const existingCartItem = cartItems.find((item) => item.id === productToAdd.id);
 
-    console.log(existingCartItem);
-
     if (existingCartItem) {
         return cartItems.map((item) => item.id === productToAdd.id ? { ...item, quantity: item.quantity + 1 } : item)
     }

@@ -24,7 +24,6 @@ const SignInForm = () => {
 
         try {
             const userDoc = await signInLegacy(formFields.email, formFields.password);
-            console.log(userDoc);
             alert(`Successfully signed in as user ${userDoc.uid}`);
             resetFormFields();
         } catch (error) {
