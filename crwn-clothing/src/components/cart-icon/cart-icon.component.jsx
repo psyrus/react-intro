@@ -13,7 +13,6 @@ const CartIcon = () => {
         return total + item.quantity;
     }, 0);
 
-    console.log(totalCartItems);
     return (
         <div className="cart-icon-container" onClick={toggleCartOpenState}>
             <ShoppingIcon className="shopping-icon"></ShoppingIcon>
