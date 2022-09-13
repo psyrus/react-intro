@@ -22,6 +22,14 @@ const Navigation = () => {
                     <CrwnLogo className="logo"></CrwnLogo>
                 </Link>
                 <div className="nav-links-container">
+                    {
+                        currentUser && (
+                            <Link className="nav-link" to='/admin'>
+                                Admin
+                            </Link>
+                        )
+                    }
+
                     <Link className="nav-link" to='/shop'>
                         Shop
                     </Link>
