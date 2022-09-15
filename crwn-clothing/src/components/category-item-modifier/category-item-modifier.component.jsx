@@ -1,30 +1,35 @@
-import { Fragment, useEffect } from "react";
+import { Fragment as div, useEffect } from "react";
 import { useState } from "react";
 import Button from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
+import "./category-item-modifier.styles.scss"
 
 const CategoryItemModifier = (params) => {
     const fieldDefaults = {
         id: '',
         name: '',
         price: '',
+        imageUrl: '',
     }
-    const { category, item } = params;
+    const { category, item, updateCallback, closeCallback } = params;
     const [formFields, setFormFields] = useState(fieldDefaults);
 
     useEffect(() => {
-        console.log("UseEffect running!");
         if (item) {
             setFormFields(item);
         } else {
             setFormFields(fieldDefaults);
         }
-        console.log(formFields);
     }, [category, item])
 
     // Need to include an onchange handler for form fields or else they won't register the input
-    const handleUpdate = () => {
-        console.log("Handling update!")
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (!parseInt(formFields.price)) {
+            alert(`Please fill out all fields. Price must be >0`);
+            return
+        }
+        updateCallback(category, formFields);
     }
 
     const handleFormFieldChange = (event) => {
@@ -34,57 +39,81 @@ const CategoryItemModifier = (params) => {
             ...formFields,
             [name]: value
         })
-
-        console.log(formFields)
     }
 
     if (!category) {
         return;
     }
 
-    if (!formFields) {
-        console.log("formFields is falsy")
-    }
+    const idField = '' === formFields.id ? (
+        <div>Add New Item</div>
+    ) : (
+        <FormInput
+            label='ID Number'
+            type='text'
+            required
+            onChange={handleFormFieldChange}
+            name='id'
+            value={formFields.id}
+            readOnly
+        />
+    )
 
-    const content = (<Fragment>
-        {category && `This is the creator form for category: ${category}`}
 
-        {formFields && ` - with selected item: ${formFields.name}`}
-        {formFields && <form>
-            <FormInput
-                label='ID Number'
-                type='text'
-                required
-                onChange={handleFormFieldChange}
-                name='id'
-                value={formFields.id}
-            />
+    const content = (
+        <div className="product-update-form">
+            <div className="product-update-close-container"><span onClick={() => closeCallback()}>&#10005;</span></div>
 
-            <FormInput
-                label='Display Name'
-                type='text'
-                required
-                onChange={handleFormFieldChange}
-                name='name'
-                value={formFields.name}
-            />
+            {category && `${category.toUpperCase()}`}
 
-            <FormInput
-                label='Price'
-                type='text'
-                required
-                onChange={handleFormFieldChange}
-                name='price'
-                value={formFields.price}
-            />
+            {formFields && `: ${formFields.name}`}
 
-            <Button onClick={() => {handleUpdate()}} type='button'>Update category</Button>
-        </form>}
-    </Fragment>)
+            {formFields && <form onSubmit={handleSubmit}>
+                {idField}
+
+                <FormInput
+                    label='Display Name'
+                    type='text'
+                    required
+                    onChange={handleFormFieldChange}
+                    name='name'
+                    value={formFields.name}
+                />
+
+                <FormInput
+                    label='Price'
+                    type='text'
+                    required
+                    onChange={handleFormFieldChange}
+                    name='price'
+                    value={formFields.price}
+                />
+
+                <FormInput
+                    label='Image Url'
+                    type='text'
+                    required
+                    onChange={handleFormFieldChange}
+                    name='imageUrl'
+                    value={formFields.imageUrl}
+                />
+                {
+                    formFields.imageUrl &&
+                    <div className="image-preview-container">
+                        <span className="image-preview-label">Image Preview</span>
+                        <img className="image-preview" src={formFields.imageUrl} />
+                    </div>
+                }
+
+
+
+                <Button type='submit'>Update category</Button>
+            </form>}
+        </div>)
 
     return (
         <div>{content}</div>
-        
+
     )
 }
 

@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 
-import { addCollectionAndDocuments, getCategoriesAndDocuments } from "../utils/firebase/firebase.utils.js";
+import { getCategoriesAndDocuments, updateCategoryItem } from "../utils/firebase/firebase.utils.js";
 
 export const CategoriesContext = createContext({
     categoriesMap: [],
@@ -9,15 +9,21 @@ export const CategoriesContext = createContext({
 // I don't know what the parent object to the "children" property is
 export const CategoriesProvider = ({ children }) => {
     const [categoriesMap, setCategoriesMap] = useState([]);
-    useEffect(() => {
-        const getCategoriesMap = async () => {
-            const categoryMap = await getCategoriesAndDocuments();
-            setCategoriesMap(categoryMap)
-        }
+    
+    const getCategoriesMap = async () => {
+        const categoryMap = await getCategoriesAndDocuments();
+        setCategoriesMap(categoryMap)
+    }
 
+    useEffect(() => {
         getCategoriesMap();
     }, []);
-    const value = { categoriesMap };
+
+    const updateItemHandler = async (categoryName, item) => {
+        await updateCategoryItem(categoryName, item);
+        getCategoriesMap();
+    }
+    const value = { categoriesMap, updateItemHandler };
 
     return <CategoriesContext.Provider value={value}>{children}</CategoriesContext.Provider>
 }
