@@ -23,7 +23,7 @@ const Navigation = () => {
                 </Link>
                 <div className="nav-links-container">
                     {
-                        currentUser && (
+                        currentUser && currentUser.isAdmin && (
                             <Link className="nav-link" to='/admin'>
                                 Admin
                             </Link>
@@ -37,7 +37,7 @@ const Navigation = () => {
                         Checkout
                     </Link>
                     {currentUser ? (
-                        <span className="nav-link" onClick={signOutHandler}>SIGN OUT</span>
+                        <span className="nav-link" onClick={signOutHandler}>SIGN OUT ({`${currentUser.displayName}`})</span>
                     ) : (
                         <Link className="nav-link" to='/auth'>
                             Sign In

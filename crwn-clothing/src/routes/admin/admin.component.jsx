@@ -4,11 +4,19 @@ import { useState } from "react";
 import { useContext } from "react";
 import CategoryItemModifier from "../../components/category-item-modifier/category-item-modifier.component";
 import { CategoriesContext } from "../../contexts/categories.context";
+import { UserContext } from "../../contexts/user.context";
 
 const Admin = () => {
     const { categoriesMap, updateItemHandler } = useContext(CategoriesContext);
+    const { currentUser } = useContext(UserContext);
     const [selectedCategory, setCategory] = useState(null);
     const [selectedItem, setItem] = useState(null);
+
+    if (!(currentUser && currentUser.isAdmin)) {
+        return (
+            <div>This page is only accessible to administrators</div>
+        )
+    }
     // Render existing items in each category
     // Render a form
     // Form should add a new product to the given category
