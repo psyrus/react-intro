@@ -1,0 +1,26 @@
+
+.product-update-form {
+    display: block;
+    max-width: 80%;
+    background-color: pink;
+    padding: 40px;
+
+    .image-preview-container {
+        display: block;
+    
+        .image-preview-label {
+        display: block;
+        }
+    
+        .image-preview {
+            max-width: 400px;
+            max-height: 600px;
+        }
+    }
+
+    .product-update-close-container {
+        font-size: 2rem;
+        text-align: right;
+        cursor: pointer;
+    }
+}

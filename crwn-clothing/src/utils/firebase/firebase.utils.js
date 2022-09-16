@@ -19,6 +19,9 @@ import {
   writeBatch,
   query,
   getDocs,
+  runTransaction,
+  updateDoc,
+  arrayUnion,
 } from 'firebase/firestore';
 
 const firebaseConfig = require('./firebase.config.json');
@@ -37,6 +40,35 @@ export const signInWithGooglePopup = () =>
 export const signInWithGoogleRedirect = () =>
   signInWithRedirect(auth, googleProvider);
 export const db = getFirestore();
+
+export const updateCategoryItem = async (collectionKey, updatedItem) => {
+  const categoryDocRef = doc(db, 'categories', collectionKey);
+  await runTransaction(db, async (transaction) => {
+    const categoryDoc = await getDoc(categoryDocRef);
+    if (!categoryDoc.exists()) {
+      throw `${collectionKey} document does not exist!`;
+    }
+    const currentData = categoryDoc.data();
+    if (updatedItem.id) {
+      const updatedData = currentData.items.map(item => item.id === updatedItem.id ? updatedItem : item)
+      await updateDoc(categoryDocRef, {
+        items: updatedData
+      })
+    } else {
+      // Get the existing collection
+      // Add the new one in the lastID slot + 1
+      let highestIdItem = -1;
+      for (let index = 0; index < currentData.items.length; index++) {
+        const element = currentData.items[index];
+        highestIdItem = Math.max(highestIdItem, element.id);
+      }
+      updatedItem['id'] = highestIdItem + 1
+      await updateDoc(categoryDocRef, {
+        items: arrayUnion(updatedItem)
+      })
+    }
+  })
+}
 
 export const addCollectionAndDocuments = async (
   collectionKey,
@@ -62,7 +94,7 @@ export const createUserDocumentfromAuth = async (
     throw new Error('Need userAuth');
   }
   const userDocRef = doc(db, 'users', userAuth.uid);
-  const userSnapShot = await getDoc(userDocRef);
+  let userSnapShot = await getDoc(userDocRef);
 
   if (!userSnapShot.exists()) {
     const createdAt = new Date();
@@ -73,12 +105,13 @@ export const createUserDocumentfromAuth = async (
         createdAt: createdAt,
         ...additionalInformation,
       });
+      userSnapShot = await getDoc(userDocRef);
     } catch (err) {
       console.log('Error creating user', err.message);
     }
   }
 
-  return userDocRef;
+  return userSnapShot.data();
 };
 
 export const getCategoriesAndDocuments = async () => {

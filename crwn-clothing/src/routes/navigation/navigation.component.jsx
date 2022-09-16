@@ -22,6 +22,14 @@ const Navigation = () => {
                     <CrwnLogo className="logo"></CrwnLogo>
                 </Link>
                 <div className="nav-links-container">
+                    {
+                        currentUser && currentUser.isAdmin && (
+                            <Link className="nav-link" to='/admin'>
+                                Admin
+                            </Link>
+                        )
+                    }
+
                     <Link className="nav-link" to='/shop'>
                         Shop
                     </Link>
@@ -29,7 +37,7 @@ const Navigation = () => {
                         Checkout
                     </Link>
                     {currentUser ? (
-                        <span className="nav-link" onClick={signOutHandler}>SIGN OUT</span>
+                        <span className="nav-link" onClick={signOutHandler}>SIGN OUT ({`${currentUser.displayName}`})</span>
                     ) : (
                         <Link className="nav-link" to='/auth'>
                             Sign In
