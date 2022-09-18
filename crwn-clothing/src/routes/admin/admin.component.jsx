@@ -17,9 +17,6 @@ const Admin = () => {
             <div>This page is only accessible to administrators</div>
         )
     }
-    // Render existing items in each category
-    // Render a form
-    // Form should add a new product to the given category
 
     const addNewItemHandler = (categoryName) => {
         setCategory(categoryName);
@@ -33,6 +30,7 @@ const Admin = () => {
 
     const updateCategory = (categoryName, updateTargetItem) => {
         updateItemHandler(categoryName, updateTargetItem);
+        closeHandler();
     }
 
     const closeHandler = () => {

@@ -13,6 +13,7 @@ const CategoryItemModifier = (params) => {
     }
     const { category, item, updateCallback, closeCallback } = params;
     const [formFields, setFormFields] = useState(fieldDefaults);
+    const [changeMade, setChangeMade] = useState(false);
 
     useEffect(() => {
         if (item) {
@@ -30,6 +31,7 @@ const CategoryItemModifier = (params) => {
             return
         }
         updateCallback(category, formFields);
+        setChangeMade(false);
     }
 
     const handleFormFieldChange = (event) => {
@@ -38,7 +40,9 @@ const CategoryItemModifier = (params) => {
         setFormFields({
             ...formFields,
             [name]: value
-        })
+        });
+
+        setChangeMade(true);
     }
 
     if (!category) {
@@ -58,7 +62,6 @@ const CategoryItemModifier = (params) => {
             readOnly
         />
     )
-
 
     const content = (
         <div className="product-update-form">
@@ -107,7 +110,7 @@ const CategoryItemModifier = (params) => {
 
 
 
-                <Button type='submit'>Update category</Button>
+                <Button type='submit' disabled={!changeMade}>Update category</Button>
             </form>}
         </div>)
 

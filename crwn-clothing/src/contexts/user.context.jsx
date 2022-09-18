@@ -14,8 +14,9 @@ export const UserProvider = ({ children }) => {
             let dbProperties = {};
             if (user) {
                 dbProperties = await createUserDocumentfromAuth(user);
+                user = {...user, ...dbProperties}
             }
-            setCurrentUser({...user, ...dbProperties});
+            setCurrentUser(user);
         });
 
         return unsubscribe;
