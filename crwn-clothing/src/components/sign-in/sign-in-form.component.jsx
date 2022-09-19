@@ -1,8 +1,9 @@
 import FormInput from "../form-input/form-input.component"
-import Button from "../button/button.component";
+import Button, {BUTTON_TYPE_CLASSES} from "../button/button.component";
 import { signInWithGooglePopup, createUserDocumentfromAuth, signInLegacy } from "../../utils/firebase/firebase.utils";
 import { useState } from "react";
 import { ButtonsContainer, SignInContainer, SignInHeader } from "./sign-in-form.styles.jsx";
+
 
 const SignInForm = () => {
 
@@ -63,7 +64,7 @@ const SignInForm = () => {
                     value={formFields.password} />
                 <ButtonsContainer>
                     <Button buttonType={'default'} type='submit' onClick={credentialsSignInFlow}>Sign In</Button>
-                    <Button buttonType={'google'} type='button' onClick={googleSignInFlow}>Google Sign In</Button>
+                    <Button buttonType={BUTTON_TYPE_CLASSES.google} type='button' onClick={googleSignInFlow}>Google Sign In</Button>
                 </ButtonsContainer>
             </form>
         </SignInContainer>

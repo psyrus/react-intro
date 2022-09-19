@@ -1,4 +1,3 @@
-import '../../components/menu/menu.styles.scss';
 import Menu from "../../components/menu/menu.component"
 const Home = () => {
     const categories = [

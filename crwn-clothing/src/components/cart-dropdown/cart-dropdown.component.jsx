@@ -5,7 +5,7 @@ import { useContext } from "react"
 
 import { CartContext } from "../../contexts/cart.context"
 import { useNavigate } from "react-router-dom"
-import { CartDropdownContainer, CartItems } from "./cart-dropdown.styles.jsx"
+import { CartDropdownContainer, CartItems, EmptyMessage } from "./cart-dropdown.styles.jsx"
 
 
 const CartDropDown = () => {
@@ -14,7 +14,9 @@ const CartDropDown = () => {
     return (
         <CartDropdownContainer>
             <CartItems>
-                {cartItems.map(item => <CartItem cartItem={item} key={item.id} />)}
+                {
+                    cartItems.length ? cartItems.map(item => <CartItem cartItem={item} key={item.id} />) : <EmptyMessage>No items in cart</EmptyMessage>
+                }
             </CartItems>
             <Button onClick={() => clearCart()}>Clear Cart</Button>
             <Button onClick={() => navTo("/checkout")}>Go to checkout</Button>

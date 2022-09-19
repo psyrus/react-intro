@@ -1,13 +1,15 @@
-import "./menu.styles.scss"
 import DirectoryItem from '../directory-item/directory-item.component';
+import { CategoriesContainer } from './menu.styles';
 
 const Menu = (props) => {
     const { categories } = props
-    return (<div className='categories-container'>
-        {categories.map((category) => {
-            return <DirectoryItem item={category} key={category.id}></DirectoryItem>;
-        })}
-    </div>);
+    return (
+        <CategoriesContainer>
+            {categories.map((category) => {
+                return <DirectoryItem item={category} key={category.id}></DirectoryItem>;
+            })}
+        </CategoriesContainer>
+    );
 }
 
 export default Menu;
