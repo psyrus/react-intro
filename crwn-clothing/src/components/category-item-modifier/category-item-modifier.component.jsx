@@ -2,7 +2,8 @@ import { Fragment as div, useEffect } from "react";
 import { useState } from "react";
 import Button from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
-import "./category-item-modifier.styles.scss"
+import "./category-item-modifier.styles.jsx"
+import { ImagePreview, ImagePreviewContainer, ImagePreviewLabel, ProductUpdateCloseContainer, ProductUpdateForm } from "./category-item-modifier.styles.jsx";
 
 const CategoryItemModifier = (params) => {
     const fieldDefaults = {
@@ -64,8 +65,8 @@ const CategoryItemModifier = (params) => {
     )
 
     const content = (
-        <div className="product-update-form">
-            <div className="product-update-close-container"><span onClick={() => closeCallback()}>&#10005;</span></div>
+        <ProductUpdateForm>
+            <ProductUpdateCloseContainer><span onClick={() => closeCallback()}>&#10005;</span></ProductUpdateCloseContainer>
 
             {category && `${category.toUpperCase()}`}
 
@@ -102,17 +103,17 @@ const CategoryItemModifier = (params) => {
                 />
                 {
                     formFields.imageUrl &&
-                    <div className="image-preview-container">
-                        <span className="image-preview-label">Image Preview</span>
-                        <img className="image-preview" src={formFields.imageUrl} />
-                    </div>
+                    <ImagePreviewContainer>
+                        <ImagePreviewLabel>Image Preview</ImagePreviewLabel>
+                        <ImagePreview src={formFields.imageUrl} />
+                    </ImagePreviewContainer>
                 }
 
 
 
                 <Button type='submit' disabled={!changeMade}>Update category</Button>
             </form>}
-        </div>)
+        </ProductUpdateForm>)
 
     return (
         <div>{content}</div>
