@@ -1,12 +1,15 @@
+import { useContext } from 'react';
+import { CategoriesContext } from '../../contexts/categories.context';
 import DirectoryItem from '../directory-item/directory-item.component';
 import { CategoriesContainer } from './menu.styles';
 
-const Menu = (props) => {
-    const { categories } = props
+const Menu = () => {
+    const { categoriesMap } = useContext(CategoriesContext)
+    const categories = Object.keys(categoriesMap);
     return (
         <CategoriesContainer>
-            {categories.map((category) => {
-                return <DirectoryItem item={category} key={category.id}></DirectoryItem>;
+            {categories.map((categoryName) => {
+                return <DirectoryItem name={categoryName} item={categoriesMap[categoryName][0]} key={categoryName}></DirectoryItem>;
             })}
         </CategoriesContainer>
     );
