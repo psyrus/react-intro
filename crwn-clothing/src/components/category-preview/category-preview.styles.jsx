@@ -11,6 +11,9 @@ export const Title = styled.h2`
     font-size: 28px;
     margin-bottom: 25px;
     cursor: pointer;
+    &:hover {
+      color: #6d6d6d;
+    }
 `
 
 export const Preview = styled.div`

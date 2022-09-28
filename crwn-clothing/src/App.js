@@ -1,12 +1,40 @@
-import { Routes, Route, Outlet } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
+import Admin from './routes/admin/admin.component';
+import Authentication from './routes/authentication/authentication.component';
+import Checkout from './routes/checkout/checkout.component';
 import Home from './routes/home/home.component';
 import Navigation from './routes/navigation/navigation.component';
-import Authentication from './routes/authentication/authentication.component';
 import Shop from './routes/shop/shop.component';
-import Checkout from './routes/checkout/checkout.component';
-import Admin from './routes/admin/admin.component';
 
+import { useEffect } from "react";
+import { useDispatch } from 'react-redux';
+import { setCurrentUser } from './store/user/user.action';
+import { createUserDocumentfromAuth, onAuthStateChangedListener } from "./utils/firebase/firebase.utils";
+import { refreshCategoriesMap } from './store/categories/category.action';
 const App = () => {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChangedListener(async (user) => {
+      let dbProperties = {};
+      if (user) {
+        dbProperties = await createUserDocumentfromAuth(user);
+        user = { ...user, ...dbProperties }
+      }
+      dispatch(setCurrentUser(user));
+    });
+
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    const callDispatchAsync = async() => {
+      const categoryAction = await refreshCategoriesMap();
+      dispatch(categoryAction)
+    }
+    callDispatchAsync();
+  }, []);
   return (
     <Routes>
       <Route path='/' element={<Navigation />}>

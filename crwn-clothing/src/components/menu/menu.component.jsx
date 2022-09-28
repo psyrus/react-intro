@@ -1,10 +1,10 @@
-import { useContext } from 'react';
-import { CategoriesContext } from '../../contexts/categories.context';
+import { useSelector } from 'react-redux';
+import { selectCategory } from '../../store/categories/category.selector';
 import DirectoryItem from '../directory-item/directory-item.component';
 import { CategoriesContainer } from './menu.styles';
 
 const Menu = () => {
-    const { categoriesMap } = useContext(CategoriesContext)
+    const categoriesMap = useSelector(selectCategory);
     const categories = Object.keys(categoriesMap);
     return (
         <CategoriesContainer>
