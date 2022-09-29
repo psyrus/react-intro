@@ -1,14 +1,14 @@
 import { getCategoriesAndDocuments } from "../../utils/firebase/firebase.utils"
 import { CATEGORY_ACTION_TYPES } from "./category.types"
 
-export const setCategoriesMap = (categoriesMap) => {
+export const setCategories = (categoriesArray) => {
     return {
-        type: CATEGORY_ACTION_TYPES.SET_CATEGORIES_MAP,
-        payload: categoriesMap
+        type: CATEGORY_ACTION_TYPES.SET_CATEGORIES,
+        payload: categoriesArray
     }
 }
 
-export const refreshCategoriesMap = async () => {
-    const dbCategoriesMap = await getCategoriesAndDocuments();
-    return setCategoriesMap(dbCategoriesMap);
+export const refreshCategories = async () => {
+    const dbCategoriesArray = await getCategoriesAndDocuments();
+    return setCategories(dbCategoriesArray);
 }

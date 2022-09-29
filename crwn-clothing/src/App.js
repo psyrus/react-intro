@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import { useDispatch } from 'react-redux';
 import { setCurrentUser } from './store/user/user.action';
 import { createUserDocumentfromAuth, onAuthStateChangedListener } from "./utils/firebase/firebase.utils";
-import { refreshCategoriesMap } from './store/categories/category.action';
+import { refreshCategories } from './store/categories/category.action';
 const App = () => {
 
   const dispatch = useDispatch();
@@ -26,15 +26,15 @@ const App = () => {
     });
 
     return unsubscribe;
-  }, []);
+  });
 
   useEffect(() => {
     const callDispatchAsync = async() => {
-      const categoryAction = await refreshCategoriesMap();
+      const categoryAction = await refreshCategories();
       dispatch(categoryAction)
     }
     callDispatchAsync();
-  }, []);
+  });
   return (
     <Routes>
       <Route path='/' element={<Navigation />}>

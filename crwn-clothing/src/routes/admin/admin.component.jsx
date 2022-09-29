@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CategoryItemModifier from "../../components/category-item-modifier/category-item-modifier.component";
-import { setCategoriesMap } from "../../store/categories/category.action";
-import { selectCategory } from "../../store/categories/category.selector";
+import { setCategories } from "../../store/categories/category.action";
+import { selectCategoriesMap } from "../../store/categories/category.selector";
 import { selectCurrentUser } from "../../store/user/user.selector";
 import { getCategoriesAndDocuments, updateCategoryItem } from "../../utils/firebase/firebase.utils";
 
 const Admin = () => {
     const dispatch = useDispatch();
     // const { categoriesMap, updateItemHandler } = useContext(CategoriesContext);
-    const categoriesMap = useSelector(selectCategory);
+    const categoriesMap = useSelector(selectCategoriesMap);
     // const { currentUser } = useContext(UserContext);
     const currentUser = useSelector(selectCurrentUser);
     const [selectedCategory, setCategory] = useState(null);
@@ -24,7 +24,7 @@ const Admin = () => {
     const updateItemHandler = async (categoryName, item) => {
         await updateCategoryItem(categoryName, item);
         const categoryMap = await getCategoriesAndDocuments();
-        dispatch(setCategoriesMap(categoryMap));
+        dispatch(setCategories(categoryMap));
     }
 
     const addNewItemHandler = (categoryName) => {
