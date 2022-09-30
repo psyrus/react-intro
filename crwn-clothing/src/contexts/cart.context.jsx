@@ -19,7 +19,7 @@ const removeCartItem = (cartItems, productToRemove, instancesToRemove) => {
     }
 
     if (existingCartItem.quantity <= instancesToRemove) {
-        return cartItems.filter(item => item.id != productToRemove.id)
+        return cartItems.filter(item => item.id !== productToRemove.id)
     }
 
     // Need to reduce the quantity of the found item

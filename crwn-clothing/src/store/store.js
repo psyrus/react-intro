@@ -2,7 +2,6 @@ import { applyMiddleware, compose, legacy_createStore as createStore } from "red
 import logger from "redux-logger";
 
 import { rootReducer } from "./root-reducer";
-// root-reducer
 
 const middleWares = [logger];
 const composedEnhancers = compose(applyMiddleware(...middleWares));
