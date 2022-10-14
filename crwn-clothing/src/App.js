@@ -35,6 +35,7 @@ const App = () => {
     }
     callDispatchAsync();
   });
+
   return (
     <Routes>
       <Route path='/' element={<Navigation />}>
