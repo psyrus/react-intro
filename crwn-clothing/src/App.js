@@ -8,9 +8,10 @@ import Shop from './routes/shop/shop.component';
 
 import { useEffect } from "react";
 import { useDispatch } from 'react-redux';
+import { fetchCategoriesAsync } from './store/categories/category.action';
 import { setCurrentUser } from './store/user/user.action';
 import { createUserDocumentfromAuth, onAuthStateChangedListener } from "./utils/firebase/firebase.utils";
-import { refreshCategories } from './store/categories/category.action';
+
 const App = () => {
 
   const dispatch = useDispatch();
@@ -29,11 +30,7 @@ const App = () => {
   });
 
   useEffect(() => {
-    const callDispatchAsync = async() => {
-      const categoryAction = await refreshCategories();
-      dispatch(categoryAction)
-    }
-    callDispatchAsync();
+    dispatch(fetchCategoriesAsync());
   });
 
   return (
