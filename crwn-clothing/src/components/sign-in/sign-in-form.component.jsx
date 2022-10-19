@@ -1,7 +1,7 @@
-import FormInput from "../form-input/form-input.component"
-import Button, {BUTTON_TYPE_CLASSES} from "../button/button.component";
-import { signInWithGooglePopup, createUserDocumentfromAuth, signInLegacy } from "../../utils/firebase/firebase.utils";
 import { useState } from "react";
+import { signInLegacy, signInWithGooglePopup } from "../../utils/firebase/firebase.utils";
+import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
+import FormInput from "../form-input/form-input.component";
 import { ButtonsContainer, SignInContainer, SignInHeader } from "./sign-in-form.styles.jsx";
 
 

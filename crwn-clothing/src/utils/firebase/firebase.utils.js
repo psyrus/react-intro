@@ -1,33 +1,17 @@
 import { initializeApp } from 'firebase/app';
 import {
-  getAuth,
-  signInWithRedirect,
-  signInWithPopup,
-  GoogleAuthProvider,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
+  createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect, signOut
 } from 'firebase/auth';
 
 import {
-  doc,
-  getDoc,
-  setDoc,
-  getFirestore,
-  collection,
-  writeBatch,
-  query,
-  getDocs,
-  runTransaction,
-  updateDoc,
-  arrayUnion,
+  arrayUnion, collection, doc,
+  getDoc, getDocs, getFirestore, query, runTransaction, setDoc, updateDoc, writeBatch
 } from 'firebase/firestore';
 
 const firebaseConfig = require('./firebase.config.json');
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 
 const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({
@@ -46,7 +30,7 @@ export const updateCategoryItem = async (collectionKey, updatedItem) => {
   await runTransaction(db, async (transaction) => {
     const categoryDoc = await getDoc(categoryDocRef);
     if (!categoryDoc.exists()) {
-      throw `${collectionKey} document does not exist!`;
+      throw new Error(`${collectionKey} document does not exist!`);
     }
     const currentData = categoryDoc.data();
     if (updatedItem.id) {
@@ -121,13 +105,7 @@ export const getCategoriesAndDocuments = async () => {
 
   const querySnapshot = await getDocs(q);
 
-  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
-    const { title, items } = docSnapshot.data();
-    acc[title.toLowerCase()] = items;
-    return acc;
-  }, {});
-
-  return categoryMap;
+  return querySnapshot.docs.map(docSnapshot => docSnapshot.data());
 };
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {

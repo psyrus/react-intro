@@ -1,8 +1,7 @@
-import { Fragment as div, useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
-import "./category-item-modifier.styles.jsx"
+import "./category-item-modifier.styles.jsx";
 import { ImagePreview, ImagePreviewContainer, ImagePreviewLabel, ProductUpdateCloseContainer, ProductUpdateForm } from "./category-item-modifier.styles.jsx";
 
 const CategoryItemModifier = (params) => {

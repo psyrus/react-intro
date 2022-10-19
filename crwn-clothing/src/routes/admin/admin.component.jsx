@@ -1,14 +1,17 @@
-// 
-
 import { useState } from "react";
-import { useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import CategoryItemModifier from "../../components/category-item-modifier/category-item-modifier.component";
-import { CategoriesContext } from "../../contexts/categories.context";
-import { UserContext } from "../../contexts/user.context";
+import { setCategories } from "../../store/categories/category.action";
+import { selectCategoriesMap } from "../../store/categories/category.selector";
+import { selectCurrentUser } from "../../store/user/user.selector";
+import { getCategoriesAndDocuments, updateCategoryItem } from "../../utils/firebase/firebase.utils";
 
 const Admin = () => {
-    const { categoriesMap, updateItemHandler } = useContext(CategoriesContext);
-    const { currentUser } = useContext(UserContext);
+    const dispatch = useDispatch();
+    // const { categoriesMap, updateItemHandler } = useContext(CategoriesContext);
+    const categoriesMap = useSelector(selectCategoriesMap);
+    // const { currentUser } = useContext(UserContext);
+    const currentUser = useSelector(selectCurrentUser);
     const [selectedCategory, setCategory] = useState(null);
     const [selectedItem, setItem] = useState(null);
 
@@ -16,6 +19,12 @@ const Admin = () => {
         return (
             <div>This page is only accessible to administrators</div>
         )
+    }
+
+    const updateItemHandler = async (categoryName, item) => {
+        await updateCategoryItem(categoryName, item);
+        const categoryMap = await getCategoriesAndDocuments();
+        dispatch(setCategories(categoryMap));
     }
 
     const addNewItemHandler = (categoryName) => {
