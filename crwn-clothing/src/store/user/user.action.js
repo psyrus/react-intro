@@ -31,21 +31,33 @@ export const signInFailed = (error) => {
         type: USER_ACTION_TYPES.SIGN_IN_FAILED, payload: error
     }
 }
-
 export const signOutStart = () => {
     return {
         type: USER_ACTION_TYPES.SIGN_OUT_START, payload: null
     }
 }
-
 export const signOutSuccess = () => {
     return {
         type: USER_ACTION_TYPES.SIGN_OUT_SUCCESS, payload: null
     }
 }
-
 export const signOutFailed = (error) => {
     return {
         type: USER_ACTION_TYPES.SIGN_OUT_FAILED, payload: error
+    }
+}
+export const signUpStart = (displayName, email, password) => {
+    return {
+        type: USER_ACTION_TYPES.SIGN_UP_START, payload: {displayName, email, password}
+    }
+}
+export const signUpSuccess = (user, additionalDetails) => {
+    return {
+        type: USER_ACTION_TYPES.SIGN_UP_SUCCESS, payload: {user, additionalDetails}
+    }
+}
+export const signUpFailed = (error) => {
+    return {
+        type: USER_ACTION_TYPES.SIGN_UP_FAILED, payload: error
     }
 }

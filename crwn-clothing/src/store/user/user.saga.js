@@ -1,6 +1,6 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
-import { createUserDocumentfromAuth, getCurrentUser, signInLegacy, signInWithGooglePopup, signOutUser } from '../../utils/firebase/firebase.utils';
-import { signInFailed, signInSuccess, signOutFailed, signOutSuccess } from './user.action';
+import { createAuthUserWithEmailAndPassword, createUserDocumentfromAuth, getCurrentUser, signInLegacy, signInWithGooglePopup, signOutUser } from '../../utils/firebase/firebase.utils';
+import { signInFailed, signInSuccess, signOutFailed, signOutSuccess, signUpFailed, signUpSuccess } from './user.action';
 import { USER_ACTION_TYPES } from './user.types';
 
 export function* getSnapshotFromUserAuth(userAuth, additionalDetails) {
@@ -52,6 +52,21 @@ export function* isUserAuthenticated() {
     }
 }
 
+export function* signUpHandler({payload: {displayName, email, password, passwordConfirm}}) {
+    try {
+        const {user} = yield call(createAuthUserWithEmailAndPassword, email, password);
+        yield put(signUpSuccess(user, { displayName}));
+    } catch (error) {
+        yield put(signUpFailed(error));
+    }
+}
+export function* signInAfterSignUp({payload: {user, additionalDetails}}) {
+    yield call(getSnapshotFromUserAuth, user, additionalDetails);
+}
+export function* onSignUpSuccess() {
+    yield takeLatest(USER_ACTION_TYPES.SIGN_UP_SUCCESS, signInAfterSignUp);
+}
+
 export function* onCheckUserSession() {
     yield takeLatest(USER_ACTION_TYPES.CHECK_USER_SESSION, isUserAuthenticated);
 }
@@ -65,7 +80,7 @@ export function* onEmailSignInStart() {
 }
 
 export function* onSignUpStart() {
-    yield takeLatest(USER_ACTION_TYPES.SIGN_UP_START, )
+    yield takeLatest(USER_ACTION_TYPES.SIGN_UP_START, signUpHandler);
 }
 
 export function* onSignOutStart() {
@@ -77,6 +92,8 @@ export function* userSagas() {
         call(onCheckUserSession),
         call(onGoogleSignInStart),
         call(onEmailSignInStart),
+        call(onSignUpStart),
+        call(onSignUpSuccess),
         call(onSignOutStart),
     ]);
 }

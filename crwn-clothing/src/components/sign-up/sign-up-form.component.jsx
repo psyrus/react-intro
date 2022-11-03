@@ -1,8 +1,9 @@
 import { useState } from "react";
 
-import { createAuthUserWithEmailAndPassword, createUserDocumentfromAuth } from "../../utils/firebase/firebase.utils";
-import FormInput from "../form-input/form-input.component";
+import { useDispatch } from "react-redux";
+import { signUpStart } from "../../store/user/user.action";
 import Button from "../button/button.component";
+import FormInput from "../form-input/form-input.component";
 import { SignUpContainer, SignUpHeader } from "./sign-up-form.styles";
 
 const defaultFormFields = {
@@ -13,7 +14,7 @@ const defaultFormFields = {
 }
 const SignUpForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
-
+    const dispatch = useDispatch();
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -30,14 +31,15 @@ const SignUpForm = () => {
         }
         try {
             // Need to create an instance in the database
-            const response = await createAuthUserWithEmailAndPassword(formFields.email, formFields.password);
+            // const response = await createAuthUserWithEmailAndPassword(formFields.email, formFields.password);
 
-            await createUserDocumentfromAuth(response.user, { displayName: formFields.displayName });
+            // await createUserDocumentfromAuth(response.user, { displayName: formFields.displayName });
+            dispatch(signUpStart(formFields.displayName, formFields.email, formFields.password));
             resetFormFields();
-            alert(`User created successfully with UID: ${response.user.uid}`);
+            // alert(`User created successfully with UID: ${response.user.uid}`);
         } catch (error) {
             if (error.code === 'auth/email-already-in-use') {
-                alert('Cannot create user, this email is already in use')
+                alert('Cannot create user, this email is already in use');
             } else {
                 console.log('User creation encountered an error', error);
             }
