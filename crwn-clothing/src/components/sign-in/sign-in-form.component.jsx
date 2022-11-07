@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { signInLegacy, signInWithGooglePopup } from "../../utils/firebase/firebase.utils";
+import { useDispatch } from "react-redux";
+import { emailSignInStart, googleSignInStart } from "../../store/user/user.action";
+import { signInLegacy } from "../../utils/firebase/firebase.utils";
 import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
 import { ButtonsContainer, SignInContainer, SignInHeader } from "./sign-in-form.styles.jsx";
@@ -7,6 +9,7 @@ import { ButtonsContainer, SignInContainer, SignInHeader } from "./sign-in-form.
 
 const SignInForm = () => {
 
+    const dispatch = useDispatch();
     const defaultFormFields = {
         email: '',
         password: '',
@@ -24,8 +27,9 @@ const SignInForm = () => {
         event.preventDefault();
 
         try {
-            const userDoc = await signInLegacy(formFields.email, formFields.password);
-            alert(`Successfully signed in as user ${userDoc.uid}`);
+            // const userDoc = await signInLegacy(formFields.email, formFields.password);
+            dispatch(emailSignInStart(formFields.email, formFields.password));
+            // alert(`Successfully signed in as user ${userDoc.uid}`);
             resetFormFields();
         } catch (error) {
             if (error.code === 'auth/wrong-password') {
@@ -40,7 +44,7 @@ const SignInForm = () => {
     }
 
     const googleSignInFlow = async () => {
-        await signInWithGooglePopup();
+        dispatch(googleSignInStart());
     }
 
     return (

@@ -8,29 +8,19 @@ import Shop from './routes/shop/shop.component';
 
 import { useEffect } from "react";
 import { useDispatch } from 'react-redux';
-import { fetchCategoriesAsync } from './store/categories/category.action';
-import { setCurrentUser } from './store/user/user.action';
-import { createUserDocumentfromAuth, onAuthStateChangedListener } from "./utils/firebase/firebase.utils";
+import { getCategoriesStart } from './store/categories/category.action';
+import { checkUserSession } from './store/user/user.action';
 
 const App = () => {
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChangedListener(async (user) => {
-      let dbProperties = {};
-      if (user) {
-        dbProperties = await createUserDocumentfromAuth(user);
-        user = { ...user, ...dbProperties }
-      }
-      dispatch(setCurrentUser(user));
-    });
-
-    return unsubscribe;
+    dispatch(checkUserSession());
   });
 
   useEffect(() => {
-    dispatch(fetchCategoriesAsync());
+    dispatch(getCategoriesStart());
   });
 
   return (
