@@ -1,0 +1,14 @@
+{
+    "azureFunctions.deploySubpath": ".",
+    "azureFunctions.postDeployTask": "npm install (functions)",
+    "azureFunctions.projectLanguage": "JavaScript",
+    "azureFunctions.projectRuntime": "~4",
+    "debug.internalConsoleOptions": "neverOpen",
+    "azureFunctions.preDeployTask": "npm prune (functions)",
+    "editor.formatOnSave": true,
+    "html.format.indentInnerHtml": true,
+    "javascript.referencesCodeLens.enabled": true,
+    "debug.javascript.pickAndAttachOptions": {
+        "restart": true
+    }
+}
