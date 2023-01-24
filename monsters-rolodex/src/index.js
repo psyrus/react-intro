@@ -1,14 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import AppFunctionalTyped from './AppFunctionalTyped';
 import './index.css';
-import App from './App';
-import AppFunctional from './AppFunctional';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AppFunctional />
+    <AppFunctionalTyped />
   </React.StrictMode>
 );
 

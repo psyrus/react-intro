@@ -8,7 +8,7 @@ type SearchBoxProps = {
     onChangeHandler: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const SearchBoxFunctional = (props: SearchBoxProps) => {
+const SearchBoxFunctionalTyped = (props: SearchBoxProps) => {
     return (
         <input
             className={`search-box-test ${props.className}`}
@@ -19,4 +19,4 @@ const SearchBoxFunctional = (props: SearchBoxProps) => {
     )
 }
 
-export default SearchBoxFunctional;
+export default SearchBoxFunctionalTyped;
